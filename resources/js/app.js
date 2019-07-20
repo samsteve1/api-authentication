@@ -18,8 +18,27 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+import Client from './components/passport/Clients.vue';
+import AuthorizedClients from './components/passport/AuthorizedClients.vue';
+import PersonalAccessTokens from './components/passport/PersonalAccessTokens.vue';
 
 Vue.component('timeline', require('./components/Timeline.vue').default);
+Vue.component('post-tweet', require('./components/PostTweet.vue'));
+
+Vue.component(
+    'passport-clients',
+    Client
+);
+
+Vue.component(
+    'passport-authorized-clients',
+   AuthorizedClients
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    PersonalAccessTokens
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -4,8 +4,10 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Timeline</div>
-
+                    
+                    
                     <div class="card-body">
+                        <post-tweet :tweets="tweets"></post-tweet>
                        <div class="media my-1" v-for="tweet in tweets" :key="tweet.id"> 
                            <div class="media-left">
                                <img src="https://www.gravatar.com/avatar/205e460b479edhd5b48aec07710c08d50" alt="">
@@ -24,6 +26,7 @@
 </template>
 
 <script>
+    import PostTweet from './PostTweet'
     export default {
         mounted() {
             axios.get('/tweets').then((response) => {
@@ -31,13 +34,15 @@
                 this.tweets = response.data
 
             })
-
             
         },
         data() {
             return {
                 tweets: []
             }
+        },
+        components: {
+           'post-tweet': PostTweet 
         },
     }
 </script>

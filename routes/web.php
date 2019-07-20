@@ -18,7 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
+Route::get('/developers', 'DeveloperController@index')->name('developers');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/tweets', 'TweetController@index')->name('tweets.index');
+    Route::post('/tweets', 'TweetController@store')->name('tweets.store');
 });
