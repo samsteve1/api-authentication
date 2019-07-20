@@ -24,5 +24,5 @@ Route::get('/tweets', [
 
 Route::post('/tweets', [
     'uses' => 'TweetController@store',
-    'middleware'   => ['auth:api']
+    'middleware'   => ['auth:api', 'scope:post-tweets']
 ]);
