@@ -17,9 +17,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => 'twitter.refresh'], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+});
+
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/auth/twitter', 'TwitterAuthController@redirect');
     Route::get('auth/twitter/callback', 'TwitterAuthController@callback');
+    Route::get('auth/twitter/refresh', 'TwitterAuthController@refresh');
 });

@@ -16,10 +16,10 @@ class TwitterAuthController extends Controller
     public function redirect()
     {
         $query = http_build_query([
-            'client_id' => '8',
+            'client_id' => '7',
             'redirect_url' => 'http://127.0.0.1:8001/auth/twitter/callback',
             'response_type' => 'code',
-            'scope' => '*'
+            'scope' => 'view-tweets'
         ]);
 
         return redirect('http://127.0.0.1:8000/oauth/authorize?' . $query);
@@ -30,8 +30,8 @@ class TwitterAuthController extends Controller
         $response = $this->client->post('http://127.0.0.1:8000/oauth/token', [
           'form_params' => [
               'grant_type'  =>  'authorization_code',
-              'client_id'   =>  '8',
-              'client_secret' =>   '76kF8kO6F2hrlpMXPJjDe2NIVdcmwNWRICddaf4U',
+              'client_id'   =>  '7',
+              'client_secret' =>   'MrTtMahwRWDtdItn6jXHxXMSf8yPCLQuQG8POmfu',
               'redirect_uri'   =>   'http://127.0.0.1:8001/auth/twitter/callback',
               'code'    =>  $request->code,
           ]
@@ -42,9 +42,34 @@ class TwitterAuthController extends Controller
         $request->user()->token()->delete();
 
         $request->user()->token()->create([
-            'access_token'  => $response->access_token
+            'access_token'  => $response->access_token,
+            'refresh_token' => $response->refresh_token,
+            'expires_in'    => $response->expires_in
         ]);
 
         return redirect('/home');
+    }
+    public function refresh(Request $request)
+    {
+        $response = $this->client->post('http://127.0.0.1:8000/oauth/token', [
+            'form_params' => [
+                'grant_type'    => 'refresh_token',
+                'refresh_token' =>  $request->user()->token->refresh_token,
+                'client_id'     => '7',
+                'client_secret' => 'MrTtMahwRWDtdItn6jXHxXMSf8yPCLQuQG8POmfu',
+                'scope' =>  'view-tweets'
+            ]
+        ]);
+
+        $response = json_decode($response->getBody());
+        
+       $request->user()->token()->update([
+            'access_token' =>  $response->access_token,
+            'expires_in'   =>   $response->expires_in,
+            'refresh_token' =>  $response->refresh_token,
+       ]);
+
+       return redirect('/home');
+
     }
 }
