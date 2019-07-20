@@ -16,7 +16,7 @@ class TwitterAuthController extends Controller
     public function redirect()
     {
         $query = http_build_query([
-            'client_id' => '7',
+            'client_id' => '8',
             'redirect_url' => 'http://127.0.0.1:8001/auth/twitter/callback',
             'response_type' => 'code',
             'scope' => '*'
@@ -30,8 +30,8 @@ class TwitterAuthController extends Controller
         $response = $this->client->post('http://127.0.0.1:8000/oauth/token', [
           'form_params' => [
               'grant_type'  =>  'authorization_code',
-              'client_id'   =>  '7',
-              'client_secret' =>   'MrTtMahwRWDtdItn6jXHxXMSf8yPCLQuQG8POmfu',
+              'client_id'   =>  '8',
+              'client_secret' =>   '76kF8kO6F2hrlpMXPJjDe2NIVdcmwNWRICddaf4U',
               'redirect_uri'   =>   'http://127.0.0.1:8001/auth/twitter/callback',
               'code'    =>  $request->code,
           ]
